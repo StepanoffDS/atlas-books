@@ -13,7 +13,7 @@ export const FilterParams = ({ className }: Props) => {
 	const isMounted = React.useRef(false);
 	const [isRus, setIsRus] = React.useState<boolean>(false);
 
-	const { onlyRussian, setOnlyRussian } = useFilterStore(
+	const { setOnlyRussian } = useFilterStore(
 		useShallow((state) => ({
 			onlyRussian: state.onlyRussian,
 			setOnlyRussian: state.setOnlyRussian,

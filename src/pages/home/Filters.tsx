@@ -1,7 +1,7 @@
-import React from 'react';
 import { Card } from '@/shared/components/ui';
 import { Sheet, SheetTrigger, SheetContent, Button } from '@/shared/components/ui';
 import { FilterParams } from '@/shared/components/general';
+import { cn } from '@/shared/lib/utils';
 
 interface Props {
 	className?: string;
@@ -13,7 +13,7 @@ interface Props {
 
 export const Filters = ({ className }: Props) => {
 	return (
-		<div className={'shrink-0 h-fit w-[250px] '}>
+		<div className={cn('shrink-0 h-fit w-[250px] ', className)}>
 			<Sheet>
 				<SheetTrigger asChild>
 					<Button variant='outline' className='md:hidden'>

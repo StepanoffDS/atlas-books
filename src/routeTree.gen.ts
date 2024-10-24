@@ -18,18 +18,11 @@ import { Route as BooksBookidImport } from './routes/books/$bookid'
 
 // Create Virtual Routes
 
-const SearchLazyImport = createFileRoute('/search')()
 const FavoritesLazyImport = createFileRoute('/favorites')()
 const AboutLazyImport = createFileRoute('/about')()
 const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
-
-const SearchLazyRoute = SearchLazyImport.update({
-  id: '/search',
-  path: '/search',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/search.lazy').then((d) => d.Route))
 
 const FavoritesLazyRoute = FavoritesLazyImport.update({
   id: '/favorites',
@@ -86,13 +79,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FavoritesLazyImport
       parentRoute: typeof rootRoute
     }
-    '/search': {
-      id: '/search'
-      path: '/search'
-      fullPath: '/search'
-      preLoaderRoute: typeof SearchLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/books/$bookid': {
       id: '/books/$bookid'
       path: '/books/$bookid'
@@ -116,7 +102,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
   '/favorites': typeof FavoritesLazyRoute
-  '/search': typeof SearchLazyRoute
   '/books/$bookid': typeof BooksBookidRoute
   '/books': typeof BooksIndexRoute
 }
@@ -125,7 +110,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
   '/favorites': typeof FavoritesLazyRoute
-  '/search': typeof SearchLazyRoute
   '/books/$bookid': typeof BooksBookidRoute
   '/books': typeof BooksIndexRoute
 }
@@ -135,30 +119,16 @@ export interface FileRoutesById {
   '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
   '/favorites': typeof FavoritesLazyRoute
-  '/search': typeof SearchLazyRoute
   '/books/$bookid': typeof BooksBookidRoute
   '/books/': typeof BooksIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/about'
-    | '/favorites'
-    | '/search'
-    | '/books/$bookid'
-    | '/books'
+  fullPaths: '/' | '/about' | '/favorites' | '/books/$bookid' | '/books'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/favorites' | '/search' | '/books/$bookid' | '/books'
-  id:
-    | '__root__'
-    | '/'
-    | '/about'
-    | '/favorites'
-    | '/search'
-    | '/books/$bookid'
-    | '/books/'
+  to: '/' | '/about' | '/favorites' | '/books/$bookid' | '/books'
+  id: '__root__' | '/' | '/about' | '/favorites' | '/books/$bookid' | '/books/'
   fileRoutesById: FileRoutesById
 }
 
@@ -166,7 +136,6 @@ export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   AboutLazyRoute: typeof AboutLazyRoute
   FavoritesLazyRoute: typeof FavoritesLazyRoute
-  SearchLazyRoute: typeof SearchLazyRoute
   BooksBookidRoute: typeof BooksBookidRoute
   BooksIndexRoute: typeof BooksIndexRoute
 }
@@ -175,7 +144,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   AboutLazyRoute: AboutLazyRoute,
   FavoritesLazyRoute: FavoritesLazyRoute,
-  SearchLazyRoute: SearchLazyRoute,
   BooksBookidRoute: BooksBookidRoute,
   BooksIndexRoute: BooksIndexRoute,
 }
@@ -195,7 +163,6 @@ export const routeTree = rootRoute
         "/",
         "/about",
         "/favorites",
-        "/search",
         "/books/$bookid",
         "/books/"
       ]
@@ -208,9 +175,6 @@ export const routeTree = rootRoute
     },
     "/favorites": {
       "filePath": "favorites.lazy.tsx"
-    },
-    "/search": {
-      "filePath": "search.lazy.tsx"
     },
     "/books/$bookid": {
       "filePath": "books/$bookid.tsx"
