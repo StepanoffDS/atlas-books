@@ -26,31 +26,37 @@ const IndexLazyImport = createFileRoute('/')()
 // Create/Update Routes
 
 const SearchLazyRoute = SearchLazyImport.update({
+  id: '/search',
   path: '/search',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/search.lazy').then((d) => d.Route))
 
 const FavoritesLazyRoute = FavoritesLazyImport.update({
+  id: '/favorites',
   path: '/favorites',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/favorites.lazy').then((d) => d.Route))
 
 const AboutLazyRoute = AboutLazyImport.update({
+  id: '/about',
   path: '/about',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/about.lazy').then((d) => d.Route))
 
 const IndexLazyRoute = IndexLazyImport.update({
+  id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
 const BooksIndexRoute = BooksIndexImport.update({
+  id: '/books/',
   path: '/books/',
   getParentRoute: () => rootRoute,
 } as any)
 
 const BooksBookidRoute = BooksBookidImport.update({
+  id: '/books/$bookid',
   path: '/books/$bookid',
   getParentRoute: () => rootRoute,
 } as any)

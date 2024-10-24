@@ -3,19 +3,27 @@ import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { Spinner, ItemCard, BookSkeleton } from '.';
 import { useIntersectionFetch } from '@/shared/hooks';
 import { fetchBooks } from '@/shared/lib';
+import { useFilterStore } from '@/shared/store';
+import { useShallow } from 'zustand/react/shallow';
 
 interface Props {
 	className?: string;
 }
 
 export const BookList = ({ className }: Props) => {
-	const query = 'business';
+	const { query, onlyRussian } = useFilterStore(
+		useShallow((state) => ({
+			query: state.searchValue,
+			onlyRussian: state.onlyRussian,
+		}))
+	);
 	const { data, isError, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
 		useInfiniteQuery<IBook[], Error>({
-			queryKey: ['books'],
+			queryKey: ['books', query, onlyRussian],
 			queryFn: () =>
 				fetchBooks({
 					query: query,
+					langRestrict: onlyRussian ? 'ru' : 'en',
 				}),
 			placeholderData: keepPreviousData,
 			initialPageParam: 0,
@@ -29,16 +37,18 @@ export const BookList = ({ className }: Props) => {
 	return (
 		<>
 			{isLoading && (
-				<div className='items-grid'>
+				<div className={cn('items-grid', className)}>
 					{[...new Array(10)].map((_, index) => (
 						<BookSkeleton key={index} className='w-full h-[425px]' />
 					))}
 				</div>
 			)}
 
-			{isError && <div>Error</div>}
+			{isError && <div className={className}>Error</div>}
 
-			{data && data.pages[0].length === 0 && <div>No books found</div>}
+			{data && data.pages[0].length === 0 && (
+				<div className={className}>No books found</div>
+			)}
 
 			{data && data.pages[0].length > 0 && (
 				<div>
@@ -51,6 +61,7 @@ export const BookList = ({ className }: Props) => {
 										<ItemCard
 											title={book.volumeInfo.title}
 											thumbnailUrl={book.volumeInfo.imageLinks?.smallThumbnail}
+											className='shadow-none'
 										/>
 									</div>
 								);

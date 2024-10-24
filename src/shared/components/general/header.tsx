@@ -15,15 +15,15 @@ import { Link, useLocation } from '@tanstack/react-router';
 import { Earth } from 'lucide-react';
 import { Layout } from '.';
 import { cn } from '@/shared/lib/utils';
+import { Search } from '@/pages/home/Search';
 
 export const Header = () => {
 	const location = useLocation();
-	console.log('location', location);
 
 	return (
 		<header>
 			<Layout>
-				<div className='flex py-3 w-full shrink-0 items-center'>
+				<div className='flex gap-4 py-3 w-full shrink-0 items-center'>
 					<Sheet>
 						<SheetTrigger asChild>
 							<Button variant='outline' size='icon' className='lg:hidden'>
@@ -51,7 +51,7 @@ export const Header = () => {
 							</div>
 						</SheetContent>
 					</Sheet>
-					<Link href='/' className='logo mr-6 hidden lg:flex'>
+					<Link href='/' className='logo hidden lg:flex'>
 						<Earth />
 						<span className='hidden lg:flex'>Atlas</span>
 					</Link>
@@ -74,10 +74,11 @@ export const Header = () => {
 							))}
 						</NavigationMenuList>
 					</NavigationMenu>
+					{location.href === '/' && <Search />}
 					<div className='ml-auto flex gap-2'>
 						{/* <Button variant='outline'>Sign in</Button> */}
 						{/* <Button>Sign Up</Button> */}
-						BETA VERSION
+						ver. BETA
 					</div>
 				</div>
 			</Layout>

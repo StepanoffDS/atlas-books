@@ -15,12 +15,12 @@ interface BookResponse {
 export const fetchBooks = async ({
 	query = '',
 	orderBy = 'relevance',
-	maxResults = 10,
+	maxResults = 12,
 	langRestrict = '',
 	pageParam = 0,
 }: fetchBooksProps): Promise<IBook[]> => {
 	const { data } = await instance.get<BookResponse>(
-		`/volumes?q=${query}&orderBy=${orderBy}&maxResults=${maxResults}&langRestrict=${langRestrict}&startIndex=${pageParam}`
+		`/volumes?q=${query}&orderBy=${orderBy}&maxResults=${maxResults}&langRestrict=${langRestrict}&startIndex=${pageParam}&projection=lite`
 	);
 
 	return data.items;

@@ -14,9 +14,4 @@ export const navigation = [
 		name: 'О нас',
 		path: '/about',
 	},
-	{
-		id: 4,
-		name: 'Поиск',
-		path: '/search',
-	},
 ];

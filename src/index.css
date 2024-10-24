@@ -77,7 +77,7 @@
 	}
 
 	.items-grid {
-		@apply grid grid-cols-5 gap-4 mb-4;
+		@apply grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 md:grid-cols-3 xl:grid-cols-4;
 	}
 
 	.item-img img {

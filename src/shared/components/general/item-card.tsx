@@ -10,10 +10,15 @@ interface Props {
 	thumbnailUrl?: string;
 }
 
-export const ItemCard = ({ className, title, thumbnailUrl }: Props) => {
+export const ItemCard = React.memo(({ className, title, thumbnailUrl }: Props) => {
 	const [isFavorite, setIsFavorite] = React.useState(false);
+
+	const handleToggleFavorite = React.useCallback(() => {
+		setIsFavorite(!isFavorite);
+	}, [isFavorite]);
+
 	return (
-		<Card className={cn('flex flex-col h-full max-h-[425px]', className)}>
+		<Card className={cn('flex flex-col h-full', className)}>
 			<CardContent className='p-3 pb-0'>
 				<div className='item-img'>
 					{thumbnailUrl ? (
@@ -28,10 +33,10 @@ export const ItemCard = ({ className, title, thumbnailUrl }: Props) => {
 			</CardHeader>
 			<CardFooter className='mt-auto p-3 flex gap-2'>
 				<Button className='flex-1'>More info</Button>
-				<Button onClick={() => setIsFavorite(!isFavorite)}>
+				<Button onClick={handleToggleFavorite}>
 					{isFavorite ? <StarFilledIcon /> : <StarIcon />}
 				</Button>
 			</CardFooter>
 		</Card>
 	);
-};
+});

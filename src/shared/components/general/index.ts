@@ -5,3 +5,5 @@ export { ItemCard } from './item-card';
 export { BookList } from './book-list';
 export { Spinner } from './spinner';
 export { BookSkeleton } from './book-skeleton';
+export { Title } from './title';
+export { FilterParams } from './filter-params';
