@@ -3,19 +3,26 @@ import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle } from '..
 import { BookCover } from './book-cover';
 import { StarFilledIcon, StarIcon } from '@radix-ui/react-icons';
 import { cn } from '@/shared/lib/utils';
+import { useFavoritesStore } from '@/shared/store';
+import { useShallow } from 'zustand/react/shallow';
 
 interface Props {
 	className?: string;
 	title: string;
 	thumbnailUrl?: string;
+	id: string;
 }
 
-export const ItemCard = React.memo(({ className, title, thumbnailUrl }: Props) => {
-	const [isFavorite, setIsFavorite] = React.useState(false);
+export const ItemCard = React.memo(({ className, title, thumbnailUrl, id }: Props) => {
+	const { favorites, toggleFavorite } = useFavoritesStore(
+		useShallow((state) => ({
+			favorites: state.favorites,
+			totalAmount: state.totalAmount,
+			toggleFavorite: state.toggleFavorite,
+		}))
+	);
 
-	const handleToggleFavorite = React.useCallback(() => {
-		setIsFavorite(!isFavorite);
-	}, [isFavorite]);
+	const isFavorite = React.useMemo(() => favorites.includes(id), [favorites, id]);
 
 	return (
 		<Card className={cn('flex flex-col h-full', className)}>
@@ -33,7 +40,7 @@ export const ItemCard = React.memo(({ className, title, thumbnailUrl }: Props) =
 			</CardHeader>
 			<CardFooter className='mt-auto p-3 flex gap-2'>
 				<Button className='flex-1'>More info</Button>
-				<Button onClick={handleToggleFavorite}>
+				<Button onClick={() => toggleFavorite(id)}>
 					{isFavorite ? <StarFilledIcon /> : <StarIcon />}
 				</Button>
 			</CardFooter>

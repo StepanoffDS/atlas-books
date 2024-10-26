@@ -21,3 +21,16 @@ export {
 export { Input } from './input';
 export { Checkbox } from './checkbox';
 export { Skeleton } from './skeleton';
+export {
+	Select,
+	SelectGroup,
+	SelectValue,
+	SelectTrigger,
+	SelectContent,
+	SelectLabel,
+	SelectItem,
+	SelectSeparator,
+	SelectScrollUpButton,
+	SelectScrollDownButton,
+} from './select';
+export { Badge, badgeVariants } from './badge';

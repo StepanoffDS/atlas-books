@@ -11,17 +11,19 @@ export const HomePage = () => {
 				<main className='main'>
 					<div>
 						<div>
-							<div className='flex flex-col gap-4 md:flex-row'>
+							<div className='relative flex flex-col gap-4 md:flex-row'>
 								<Filters />
-								<div>
-									<div className='flex items-end'>
-										<span className=''>Результат по запросу: </span>
-										<Title
-											text={query}
-											size='xl'
-											className='ml-3 leading-none font-medium'
-										/>
-									</div>
+								<div className='flex-1'>
+									{query && (
+										<div className='flex flex-col lg:items-end lg:flex-row'>
+											<span className=''>Результат по запросу: </span>
+											<Title
+												text={query}
+												size='xl'
+												className='leading-none font-medium lg:ml-3'
+											/>
+										</div>
+									)}
 									<BookList className='mt-6' />
 								</div>
 							</div>

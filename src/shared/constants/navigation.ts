@@ -9,9 +9,4 @@ export const navigation = [
 		name: 'Избранное',
 		path: '/favorites',
 	},
-	{
-		id: 3,
-		name: 'О нас',
-		path: '/about',
-	},
 ];
