@@ -7,27 +7,23 @@ interface Props {
 	className?: string;
 }
 
-// TODO: Реализовать фильтры (понять какие вообще можно сделать)
-// TODO: Передавать параметры в URL через query-string
-// TODO: На мобилке будет кнопка с фильтрами
-
 export const Filters = ({ className }: Props) => {
 	return (
-		<div className={cn('shrink-0 h-fit w-[250px] ', className)}>
+		<div className={cn('shrink-0 h-fit w-[250px] sticky top-2', className)}>
 			<Sheet>
 				<SheetTrigger asChild>
 					<Button variant='outline' className='md:hidden'>
 						Фильтры
 					</Button>
 				</SheetTrigger>
-				<SheetContent>
+				<SheetContent side={'left'}>
 					<div className='grid gap-4 py-4'>
-						<FilterParams />
+						<FilterParams id='sheet' />
 					</div>
 				</SheetContent>
 			</Sheet>
 			<Card className='hidden md:block p-3'>
-				<FilterParams />
+				<FilterParams id='card' />
 			</Card>
 		</div>
 	);

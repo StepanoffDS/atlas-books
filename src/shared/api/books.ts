@@ -2,13 +2,17 @@ import { instance } from './instance';
 
 export interface fetchBooksProps {
 	query?: string;
-	orderBy?: 'relevance' | 'newest';
+	orderBy?: TOrderBy;
 	maxResults?: number;
-	langRestrict?: string;
+	langRestrict?: TLang;
 	pageParam?: number;
+	filter?: TFilter;
+	printType?: TPrintType;
+	download?: TDownload;
 }
 
 interface BookResponse {
+	totalItems: number;
 	items: IBook[];
 }
 
@@ -18,10 +22,38 @@ export const fetchBooks = async ({
 	maxResults = 12,
 	langRestrict = '',
 	pageParam = 0,
-}: fetchBooksProps): Promise<IBook[]> => {
-	const { data } = await instance.get<BookResponse>(
-		`/volumes?q=${query}&orderBy=${orderBy}&maxResults=${maxResults}&langRestrict=${langRestrict}&startIndex=${pageParam}&projection=lite`
-	);
+	filter = 'ebooks',
+	printType = 'all',
+	download = '',
+}: fetchBooksProps): Promise<IBook[] | []> => {
+	try {
+		const downloadParam = download ? `&download=${download}` : '';
+		const langParam = langRestrict ? `&langRestrict=${langRestrict}` : '';
 
-	return data.items;
+		const string = `/volumes?q=${query}&orderBy=${orderBy}&maxResults=${maxResults}${langParam}&startIndex=${pageParam}&projection=lite&filter=${filter}&printType=${printType}${downloadParam}`;
+
+		const { data } = await instance.get<BookResponse>(string);
+
+		if (data.totalItems === 0) return [];
+
+		return data.items;
+	} catch (error) {
+		console.error('Books fetch ERROR: ', error);
+		return [];
+	}
+};
+
+export const fetchBooksById = async (favorites: string[]) => {
+	try {
+		const promises = favorites.map((id) => instance.get(`/volumes/${id}`));
+
+		// Ожидаем завершения всех запросов
+		const responses = await Promise.all(promises);
+		const booksData = responses.map((response) => response.data);
+
+		return booksData;
+	} catch (err) {
+		console.error('Error fetching books by id:', err);
+		return [];
+	}
 };

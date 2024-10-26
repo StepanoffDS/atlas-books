@@ -9,6 +9,16 @@ declare global {
 		accessInfo: AccessInfo;
 		searchInfo: SearchInfo;
 	}
+
+	export type TFilter = 'ebooks' | 'free-ebooks' | 'paid-ebooks' | 'full' | 'partial';
+
+	export type TOrderBy = 'relevance' | 'newest';
+
+	export type TPrintType = 'all' | 'books' | 'magazines';
+
+	export type TDownload = '' | 'epub';
+
+	export type TLang = '' | 'ru';
 }
 
 export interface VolumeInfo {

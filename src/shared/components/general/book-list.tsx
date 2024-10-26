@@ -1,31 +1,55 @@
 import { cn } from '@/shared/lib/utils';
-import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { Spinner, ItemCard, BookSkeleton } from '.';
 import { useIntersectionFetch } from '@/shared/hooks';
-import { fetchBooks } from '@/shared/lib';
 import { useFilterStore } from '@/shared/store';
 import { useShallow } from 'zustand/react/shallow';
+import { Api } from '@/shared/api/api-client';
+import React from 'react';
 
 interface Props {
 	className?: string;
 }
 
 export const BookList = ({ className }: Props) => {
-	const { query, onlyRussian } = useFilterStore(
-		useShallow((state) => ({
-			query: state.searchValue,
-			onlyRussian: state.onlyRussian,
-		}))
-	);
+	// Получаем данные для запроса на сервер
+	const { query, onlyRussian, onlyDownload, filterType, ordering, printing } =
+		useFilterStore(
+			useShallow((state) => ({
+				query: state.searchValue,
+				onlyRussian: state.onlyRussian,
+				onlyDownload: state.onlyDownload,
+				filterType: state.filterType,
+				ordering: state.ordering,
+				printing: state.printing,
+			}))
+		);
+
+	React.useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [query, onlyRussian, onlyDownload, filterType, ordering, printing]);
+
+	// Здесь происходит запрос на сервер
 	const { data, isError, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
 		useInfiniteQuery<IBook[], Error>({
-			queryKey: ['books', query, onlyRussian],
+			queryKey: [
+				'books',
+				query,
+				onlyRussian,
+				onlyDownload,
+				filterType,
+				ordering,
+				printing,
+			],
 			queryFn: () =>
-				fetchBooks({
+				Api.books.fetchBooks({
 					query: query,
-					langRestrict: onlyRussian ? 'ru' : 'en',
+					langRestrict: onlyRussian ? 'ru' : '',
+					download: onlyDownload ? 'epub' : '',
+					filter: filterType,
+					orderBy: ordering,
+					printType: printing,
 				}),
-			placeholderData: keepPreviousData,
 			initialPageParam: 0,
 			getNextPageParam: (lastPage, pages) => {
 				return lastPage.length ? pages.length * 20 : undefined; // Параметр следующей страницы
@@ -36,6 +60,12 @@ export const BookList = ({ className }: Props) => {
 
 	return (
 		<>
+			{!query && (
+				<div className={'flex justify-center items-center h-full'}>
+					Введите название книги
+				</div>
+			)}
+
 			{isLoading && (
 				<div className={cn('items-grid', className)}>
 					{[...new Array(10)].map((_, index) => (
@@ -46,8 +76,8 @@ export const BookList = ({ className }: Props) => {
 
 			{isError && <div className={className}>Error</div>}
 
-			{data && data.pages[0].length === 0 && (
-				<div className={className}>No books found</div>
+			{data && data.pages[0].length === 0 && query && (
+				<div className={className}>По вашему запросу не найдено ни одной книги</div>
 			)}
 
 			{data && data.pages[0].length > 0 && (
@@ -59,6 +89,7 @@ export const BookList = ({ className }: Props) => {
 								return (
 									<div key={book.id} ref={isLastBook ? intersectionRef : null}>
 										<ItemCard
+											id={book.id}
 											title={book.volumeInfo.title}
 											thumbnailUrl={book.volumeInfo.imageLinks?.smallThumbnail}
 											className='shadow-none'
@@ -74,7 +105,7 @@ export const BookList = ({ className }: Props) => {
 								<Spinner />
 							</div>
 						)}
-						{!hasNextPage && <div>No more books</div>}
+						{!hasNextPage && <div>Больше книг нет</div>}
 					</div>
 				</div>
 			)}
