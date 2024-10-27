@@ -62,12 +62,20 @@ export interface PanelizationSummary {
 export interface ImageLinks {
 	smallThumbnail: string;
 	thumbnail?: string;
+	small?: string;
+	medium?: string;
+	large?: string;
+	extraLarge?: string;
 }
 
 export interface SaleInfo {
 	country: string;
 	saleability: string;
 	isEbook: boolean;
+	listPrice: {
+		amount: number;
+		currencyCode: string;
+	};
 }
 
 export interface AccessInfo {

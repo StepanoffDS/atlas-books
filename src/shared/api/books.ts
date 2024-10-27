@@ -57,3 +57,12 @@ export const fetchBooksById = async (favorites: string[]) => {
 		return [];
 	}
 };
+
+export const fetchBookById = async (id: string) => {
+	try {
+		const response = await instance.get(`/volumes/${id}`);
+		return response.data;
+	} catch (error) {
+		console.log('Error fetching book by id:', error);
+	}
+};

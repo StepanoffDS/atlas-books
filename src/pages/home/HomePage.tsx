@@ -1,9 +1,14 @@
 import { BookList, Layout, Title } from '@/shared/components/general';
 import { Filters } from './Filters';
 import { useFilterStore } from '@/shared/store';
+import React from 'react';
 
 export const HomePage = () => {
 	const query = useFilterStore((state) => state.searchValue);
+
+	React.useEffect(() => {
+		document.title = 'Atlas - Главная';
+	}, []);
 
 	return (
 		<Layout>

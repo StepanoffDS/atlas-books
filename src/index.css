@@ -68,6 +68,8 @@
 	}
 
 	#root {
+		position: relative;
+		min-height: 100dvh;
 	}
 
 	.layout {
@@ -90,5 +92,31 @@
 
 	.logo svg {
 		@apply h-8 w-8 text-primary;
+	}
+
+	.text-container {
+		position: relative;
+		overflow: hidden;
+	}
+
+	.text-container p {
+		margin: 0;
+	}
+
+	.text-container:after {
+		content: '';
+		display: block;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 40px; /* Высота градиента */
+		transition: opacity 0.3s ease;
+
+		@apply bg-gradient-to-b from-transparent to-background;
+	}
+
+	.text-container.expanded:after {
+		display: none; /* Убираем градиент при развернутом тексте */
 	}
 }

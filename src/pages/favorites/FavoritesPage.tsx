@@ -2,6 +2,7 @@ import { Layout, Title } from '@/shared/components/general';
 import { useFavoritesStore } from '@/shared/store';
 import { useShallow } from 'zustand/react/shallow';
 import { FavoritesListing } from './FavoritesListing';
+import React from 'react';
 
 export const FavoritesPage = () => {
 	const { favorites, totalAmount } = useFavoritesStore(
@@ -10,6 +11,10 @@ export const FavoritesPage = () => {
 			totalAmount: state.totalAmount,
 		}))
 	);
+
+	React.useEffect(() => {
+		document.title = 'Atlas - Избранное';
+	}, []);
 
 	return (
 		<div>

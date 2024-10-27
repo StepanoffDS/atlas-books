@@ -7,3 +7,5 @@ export { Spinner } from './spinner';
 export { BookSkeleton } from './book-skeleton';
 export { Title } from './title';
 export { FilterParams } from './filter-params';
+export { FavoriteButton } from './favorite-button';
+export { ModeToggle } from './mode-toggle';

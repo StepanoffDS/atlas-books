@@ -34,3 +34,5 @@ export {
 	SelectScrollDownButton,
 } from './select';
 export { Badge, badgeVariants } from './badge';
+export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from './popover';
+export { ThemeProvider, useTheme } from './theme-provider';

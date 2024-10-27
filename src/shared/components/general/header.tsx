@@ -13,7 +13,7 @@ import {
 import { navigation } from '@/shared/constants';
 import { Link, useLocation } from '@tanstack/react-router';
 import { Earth } from 'lucide-react';
-import { Layout, Title } from '.';
+import { Layout, ModeToggle, Title } from '.';
 import { cn } from '@/shared/lib/utils';
 import { Search } from '@/pages/home/Search';
 import { useFavoritesStore } from '@/shared/store';
@@ -45,7 +45,7 @@ export const Header = () => {
 									Make changes to your profile here. Click save when you're done.
 								</SheetDescription>
 							</SheetHeader>
-							<Link href='/' className='logo'>
+							<Link to='/' className='logo'>
 								<Earth className='h-6 w-6' />
 								<Title text='Atlas Books' />
 							</Link>
@@ -53,7 +53,7 @@ export const Header = () => {
 								{navigation.map((link) => (
 									<Link
 										key={link.id}
-										href={link.path}
+										to={link.path}
 										onClick={handleLinkClick}
 										className={cn(
 											'flex gap-2 w-full items-center text-lg font-semibold',
@@ -71,7 +71,7 @@ export const Header = () => {
 							</div>
 						</SheetContent>
 					</Sheet>
-					<Link href='/' className='logo hidden lg:flex'>
+					<Link to='/' className='logo hidden lg:flex'>
 						<Earth />
 						<span className='hidden lg:flex'>Atlas</span>
 					</Link>
@@ -80,9 +80,9 @@ export const Header = () => {
 							{navigation.map((link) => (
 								<NavigationMenuLink asChild key={link.id}>
 									<Link
-										href={link.path}
+										to={link.path}
 										className={cn(
-											'group inline-flex h-9 w-max items-center gap-2 justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50',
+											'group inline-flex h-9 w-max items-center gap-2 justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-slate-900 disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 ',
 											{
 												'text-primary': link.path === location.pathname,
 											}
@@ -101,6 +101,7 @@ export const Header = () => {
 					<div className='ml-auto flex gap-2'>
 						{/* <Button variant='outline'>Sign in</Button> */}
 						{/* <Button>Sign Up</Button> */}
+						<ModeToggle />
 						<a
 							href='https://t.me/Stepanoff_ds'
 							target='_blank'
